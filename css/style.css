@@ -3,9 +3,6 @@
   --text-color: #fff;
   --center-color: #ff66a3;
   --popup-shadow: rgba(255, 255, 255, 0.25);
-  --panel-bg: rgba(0, 0, 0, 0.3);
-  --panel-text: #fff;
-  --slider-track: #ff66a3;
 }
 
 body.dark-theme {
@@ -39,13 +36,10 @@ body {
 }
 
 @keyframes breathe {
-
-  0%,
-  100% {
+  0%, 100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
-
   50% {
     transform: translate(-50%, -50%) scale(1.08);
     opacity: 0.9;
@@ -53,11 +47,8 @@ body {
 }
 
 .popup {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 50%;
-  position: fixed; /* 关键 */
+  position: fixed;
+  transform: translate(-50%, -50%) scale(0.9);
   color: #fff;
   border-radius: 0.5em;
   font-size: clamp(10px, 3vw, 16px);
@@ -67,7 +58,6 @@ body {
   box-shadow: 0 4px 16px var(--popup-shadow);
   z-index: 1;
   white-space: nowrap;
-  transform: translate(-50%, -50%) scale(0.9);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: transform 1.2s ease, opacity 1.2s ease;
@@ -100,6 +90,7 @@ body {
   text-align: center;
 }
 
+/* 主题切换按钮 */
 .theme-toggle {
   position: absolute;
   top: 1em;
@@ -118,35 +109,17 @@ body {
   height: 3em;
 }
 
-#controlPanel {
+/* 音乐按钮右下角 */
+#musicButton {
   position: absolute;
   bottom: 1em;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--panel-bg);
-  backdrop-filter: blur(10px);
-  border-radius: 0.75em;
-  padding: 0.5em 1em;
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  color: var(--panel-text);
-  font-family: sans-serif;
-  flex-wrap: wrap;
-  z-index: 1000;
-}
-
-#controlPanel input[type=range] {
-  width: 8em;
-  accent-color: var(--slider-track);
-}
-
-#musicButton {
+  right: 1em;
   width: 3em;
   height: 3em;
   background: transparent;
   border: none;
   cursor: pointer;
+  z-index: 1000;
   transition: transform 0.2s ease;
 }
 
@@ -176,13 +149,12 @@ body {
     padding: 0.3em 0.5em;
   }
 
-  #controlPanel {
-    width: 73%;
-    bottom: 0.4em;
-    scale: 0.9;
+  .theme-toggle img {
+    width: 2.4em;
+    height: 2.4em;
   }
 
-  .theme-toggle img {
+  #musicButton {
     width: 2.4em;
     height: 2.4em;
   }

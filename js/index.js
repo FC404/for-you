@@ -1,3 +1,4 @@
+// ------------------ 数据和样式 ------------------
 const messages = [
   "你已经很棒了，坚持下去！", "再努力一点点，离成功更近啦！",
   "别怕慢，只要不停步！", "你值得拥有所有美好的事物！",
@@ -16,18 +17,17 @@ const gradients = [
   "linear-gradient(135deg,#a1ffce,#faffd1)"
 ];
 
-const popupCountSlider = document.getElementById("popupCountSlider");
-const popupCountDisplay = document.getElementById("popupCountDisplay");
-popupCountSlider.addEventListener("input", () => popupCountDisplay.textContent = popupCountSlider.value);
+let activePopups = [];         // 当前屏幕上所有弹窗
+const MAX_POPUPS = 83;         // 累积达到 83 个就淡出清空
 
-// 心形函数
+// ------------------ 心形函数 ------------------
 function heartXY(t, scaleX, scaleY) {
   const x = 16 * Math.pow(Math.sin(t), 3);
   const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
   return { x: x * scaleX, y: -y * scaleY };
 }
 
-// 弹窗飞行动画
+// ------------------ 弹窗飞行动画 ------------------
 function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   const startTime = performance.now();
   function animate(now) {
@@ -37,24 +37,33 @@ function flyPopup(popup, startX, startY, targetX, targetY, duration) {
     popup.style.left = startX + (targetX - startX) * ease + "px";
     popup.style.top = startY + (targetY - startY) * ease + "px";
     popup.style.opacity = ease;
-
     if (progress < 1) requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
 }
 
-// 创建一批心形弹窗
-function createHeartBatch(speed = 1) {
+// ------------------ 创建一批心形弹窗 ------------------
+function createHeartBatch() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
-  const totalPoints = parseInt(popupCountSlider.value); // 数量固定
-  const flyDuration = 1500 / speed;   // 飞行时间随倍速缩放
-  const stayDuration = 5000 / speed;  // 停留时间随倍速缩放
-  const interval = 100;               // 弹窗生成间隔固定
+  const totalPoints = 50;  // 每批生成的弹窗数量
+  const flyDuration = 1500;
+  const stayDuration = 7000;
+  const interval = 100;
 
   for (let i = 0; i < totalPoints; i++) {
     setTimeout(() => {
+      // 累积计数，超过 MAX_POPUPS 就淡出清空
+      if (activePopups.length >= MAX_POPUPS) {
+        activePopups.forEach(p => {
+          p.style.transition = "opacity 0.5s";
+          p.style.opacity = 0;
+          setTimeout(() => p.remove(), 500);
+        });
+        activePopups = [];
+      }
+
       const msg = messages[Math.floor(Math.random() * messages.length)];
       const popup = document.createElement("div");
       popup.className = "popup";
@@ -67,14 +76,22 @@ function createHeartBatch(speed = 1) {
       `;
       popup.style.background = gradients[Math.floor(Math.random() * gradients.length)];
       document.body.appendChild(popup);
-      popup.querySelector(".popup-close").addEventListener("click", () => popup.remove());
+      activePopups.push(popup);
+
+      popup.querySelector(".popup-close").addEventListener("click", () => {
+        popup.style.transition = "opacity 0.5s";
+        popup.style.opacity = 0;
+        setTimeout(() => {
+          popup.remove();
+          activePopups = activePopups.filter(p => p !== popup);
+        }, 500);
+      });
 
       const t = 2 * Math.PI * (i / totalPoints);
       const pos = heartXY(t, baseScale, baseScale);
       const targetX = centerX + pos.x;
       const targetY = centerY + pos.y;
 
-      // 弹窗从随机边缘飞到目标
       const side = Math.floor(Math.random() * 4);
       const offset = 100;
       let startX, startY;
@@ -86,25 +103,31 @@ function createHeartBatch(speed = 1) {
       }
 
       flyPopup(popup, startX, startY, targetX, targetY, flyDuration);
-      setTimeout(() => popup.remove(), flyDuration + stayDuration);
+
+      // 自动消失
+      setTimeout(() => {
+        popup.style.transition = "opacity 0.5s";
+        popup.style.opacity = 0;
+        setTimeout(() => {
+          popup.remove();
+          activePopups = activePopups.filter(p => p !== popup);
+        }, 500);
+      }, flyDuration + stayDuration);
+
     }, i * interval);
   }
 
-  // 下一批心形生成
-  const nextBatchDelay = totalPoints * interval + 200;
-  setTimeout(() => createHeartBatch(speed), nextBatchDelay);
+  setTimeout(() => createHeartBatch(), totalPoints * interval + 200);
 }
 
-// 开始生成
-createHeartBatch(1); // 1倍速
+// ------------------ 开始生成 ------------------
+createHeartBatch();
 
-
-setInterval(createPopup, 1000);
-
-// 主题切换
+// ------------------ 主题切换 ------------------
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
 const musicIcon = document.getElementById("musicIcon");
+
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark-theme");
   const dark = document.body.classList.contains("dark-theme");
@@ -115,18 +138,16 @@ themeToggle.addEventListener("click", () => {
     : (playing ? "images/music-pause-dark.svg" : "images/music-play-dark.svg");
 });
 
-// 音乐按钮
+// ------------------ 音乐按钮 ------------------
 const musicButton = document.getElementById("musicButton");
 const bgMusic = document.getElementById("bgMusic");
-
 let isPlaying = false;
 
 musicButton.addEventListener("click", async () => {
   const dark = document.body.classList.contains("dark-theme");
-
   if (!isPlaying) {
     try {
-      await bgMusic.play(); // 第一次点击直接播放
+      await bgMusic.play();
       musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
       musicIcon.dataset.playing = "true";
       isPlaying = true;
