@@ -116,6 +116,7 @@ for (let i = 0; i < count; i++) {
   // 音乐按钮
   const musicButton = document.getElementById("musicButton");
   const bgMusic = document.getElementById("bgMusic");
+
   let isPlaying = false;
   
   musicButton.addEventListener("click", async () => {
@@ -123,7 +124,7 @@ for (let i = 0; i < count; i++) {
   
     if (!isPlaying) {
       try {
-        await bgMusic.play(); // 确保第一次点击就在用户交互中播放
+        await bgMusic.play(); // 第一次点击直接播放
         musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
         musicIcon.dataset.playing = "true";
         isPlaying = true;
