@@ -113,41 +113,20 @@ for (let i = 0; i < count; i++) {
       : (playing ? "images/music-pause-dark.svg" : "images/music-play-dark.svg");
   });
 
+  // 音乐按钮
   const musicButton = document.getElementById("musicButton");
   const bgMusic = document.getElementById("bgMusic");
   let isPlaying = false;
-  
-  // 🌟 移动端音频解锁（关键）
-  function unlockAudio() {
-    bgMusic.play().then(() => {
-      bgMusic.pause();
-      document.removeEventListener('touchstart', unlockAudio);
-      document.removeEventListener('click', unlockAudio);
-      console.log('Audio unlocked ✅');
-    }).catch(() => {});
-  }
-  document.addEventListener('touchstart', unlockAudio);
-  document.addEventListener('click', unlockAudio);
-  
-  // 播放/暂停控制
   musicButton.addEventListener("click", () => {
     const dark = document.body.classList.contains("dark-theme");
-  
-    // 尝试播放（第一次点击解锁）
-    bgMusic.play().catch(() => {
-      console.log("首次点击解锁音频权限");
-    });
-  
     if (isPlaying) {
       bgMusic.pause();
       musicIcon.src = dark ? "images/music-play-light.svg" : "images/music-play-dark.svg";
       musicIcon.dataset.playing = "false";
     } else {
+      bgMusic.play();
       musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
       musicIcon.dataset.playing = "true";
     }
-  
     isPlaying = !isPlaying;
   });
-  
-  
