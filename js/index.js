@@ -117,16 +117,24 @@ for (let i = 0; i < count; i++) {
   const musicButton = document.getElementById("musicButton");
   const bgMusic = document.getElementById("bgMusic");
   let isPlaying = false;
-  musicButton.addEventListener("click", () => {
+  
+  musicButton.addEventListener("click", async () => {
     const dark = document.body.classList.contains("dark-theme");
-    if (isPlaying) {
+  
+    if (!isPlaying) {
+      try {
+        await bgMusic.play(); // 确保第一次点击就在用户交互中播放
+        musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
+        musicIcon.dataset.playing = "true";
+        isPlaying = true;
+      } catch (err) {
+        console.log("播放被阻止:", err);
+      }
+    } else {
       bgMusic.pause();
       musicIcon.src = dark ? "images/music-play-light.svg" : "images/music-play-dark.svg";
       musicIcon.dataset.playing = "false";
-    } else {
-      bgMusic.play();
-      musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
-      musicIcon.dataset.playing = "true";
+      isPlaying = false;
     }
-    isPlaying = !isPlaying;
   });
+  
