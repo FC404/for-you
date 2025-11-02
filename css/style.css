@@ -150,12 +150,12 @@ body {
   }
 
   .theme-toggle img {
-    width: 2.4em;
-    height: 2.4em;
+    width: 4em;
+    height: 4em;
   }
 
   #musicButton {
-    width: 2.4em;
-    height: 2.4em;
+    width:4em;
+    height: 4em;
   }
 }
