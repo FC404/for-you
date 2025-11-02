@@ -60,9 +60,9 @@ function createHeartBatch() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
-  const totalPoints = 50;  // 每批生成的弹窗数量
-  const flyDuration = 4000;
-  const stayDuration = 5000;
+  const totalPoints = window.innerWidth < 700 ? 30 : 50;
+  const flyDuration = window.innerWidth < 700 ? 3000 : 4000;
+  const stayDuration = window.innerWidth < 700 ? 4000 : 5000;
   const interval = 100;
 
   for (let i = 0; i < totalPoints; i++) {
