@@ -53,7 +53,7 @@ body {
 }
 
 .popup {
-  position: absolute;
+  position: fixed; /* 关键 */
   color: #fff;
   border-radius: 0.5em;
   font-size: clamp(10px, 3vw, 16px);
