@@ -61,6 +61,12 @@ body {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: transform 1.2s ease, opacity 1.2s ease;
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.85); /* 半透明白背景 */
+  color: #000; /* 黑色文字 */
+  font-weight: 700;
+  font-size: clamp(12px, 3vw, 18px);
+  text-shadow: 0 0 4px rgba(0,0,0,0.4); /* 文字轻微阴影 */
 }
 
 .popup-header {

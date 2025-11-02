@@ -18,7 +18,7 @@ const gradients = [
 ];
 
 let activePopups = [];         // 当前屏幕上所有弹窗
-const MAX_POPUPS = 83;         // 累积达到 83 个就淡出清空
+const MAX_POPUPS = 80;         // 累积达到 83 个就淡出清空
 
 // ------------------ 心形函数 ------------------
 function heartXY(t, scaleX, scaleY) {
@@ -41,6 +41,19 @@ function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   }
   requestAnimationFrame(animate);
 }
+// 超出上限时淡出最早的几个弹窗
+function trimPopups() {
+  const excess = activePopups.length - MAX_POPUPS + 1;
+  if (excess > 0) {
+    const toRemove = activePopups.splice(0, excess);
+    toRemove.forEach(p => {
+      p.style.transition = "opacity 0.7s";
+      p.style.opacity = 0;
+      setTimeout(() => p.remove(), 700);
+    });
+  }
+}
+
 
 // ------------------ 创建一批心形弹窗 ------------------
 function createHeartBatch() {
@@ -55,14 +68,7 @@ function createHeartBatch() {
   for (let i = 0; i < totalPoints; i++) {
     setTimeout(() => {
       // 累积计数，超过 MAX_POPUPS 就淡出清空
-      if (activePopups.length >= MAX_POPUPS) {
-        activePopups.forEach(p => {
-          p.style.transition = "opacity 0.5s";
-          p.style.opacity = 0;
-          setTimeout(() => p.remove(), 500);
-        });
-        activePopups = [];
-      }
+      trimPopups();
 
       const msg = messages[Math.floor(Math.random() * messages.length)];
       const popup = document.createElement("div");
