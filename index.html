@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>For You ❤</title>
+  <link rel="icon" href="images/favicon.svg" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="dark-theme">
+  <div class="center-text">For You ❤</div>
+  <div class="theme-toggle" id="themeToggle">
+    <img id="themeIcon" src="images/sun.svg" alt="主题图标">
+  </div>
+
+  <div id="controlPanel">
+    <label for="popupCountSlider">弹窗倍数：</label>
+    <input type="range" id="popupCountSlider" min="10" max="60" value="40">
+    <span id="popupCountDisplay">40</span>
+    <button id="musicButton">
+      <img id="musicIcon" src="images/music-play-light.svg" alt="播放音乐" data-playing="false">
+    </button>
+  </div>
+
+  <audio id="bgMusic" loop src="music/MRZ - midnight smoke.mp3"></audio>
+
+  <script src="js/index.js"></script>
+</body>
+
+</html>
