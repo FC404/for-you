@@ -18,7 +18,7 @@ const gradients = [
 ];
 
 let activePopups = [];
-const MAX_POPUPS = 60;  // 移动端减少数量
+const MAX_POPUPS = 70;  // 移动端减少数量
 
 // ------------------ 心形函数 ------------------
 function heartXY(t, scaleX, scaleY) {
