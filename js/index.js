@@ -48,7 +48,12 @@ function createPopup() {
 
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
-  const baseScale = Math.min(window.innerWidth, window.innerHeight) / (isMobile ? 30 : 35); 
+
+  // 根据屏幕大小调整心形缩放
+  const scale = isMobile 
+      ? Math.min(window.innerWidth, window.innerHeight) / 40 
+      : Math.min(window.innerWidth, window.innerHeight) / 35;
+
   const interval = 100;
 
   for (let i = 0; i < count; i++) {
@@ -67,15 +72,13 @@ function createPopup() {
       document.body.appendChild(popup);
       popup.querySelector(".popup-close").addEventListener("click", () => popup.remove());
 
-      // 爱心 t 分布
-      const t = 2 * Math.PI * (i / count); 
-      const scaleX = baseScale * (isMobile ? 0.8 : 1);
-      const scaleY = baseScale;
-      const pos = heartXY(t, scaleX, scaleY);
+      // 心形 t 坐标
+      const t = 2 * Math.PI * (i / count);
+      const pos = heartXY(t, scale, scale);
 
-      // 起始位置在屏幕中心随机微偏移
-      const startX = centerX + (Math.random() - 0.5) * 50;
-      const startY = centerY + (Math.random() - 0.5) * 50;
+      // 起点固定在屏幕中心
+      const startX = centerX;
+      const startY = centerY;
 
       const targetX = centerX + pos.x;
       const targetY = centerY + pos.y;
