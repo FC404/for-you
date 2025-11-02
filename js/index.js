@@ -115,7 +115,6 @@ setInterval(createPopup, 1000);
 // ==========================
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.getElementById("themeIcon");
-const musicIcon = document.getElementById("musicIcon");
 
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("dark-theme");
@@ -135,23 +134,33 @@ themeToggle.addEventListener("click", () => {
 // 🎧 音乐播放控制
 // ==========================
 const musicButton = document.getElementById("musicButton");
+const musicIcon = document.getElementById("musicIcon");
 const bgMusic = document.getElementById("bgMusic");
 let isPlaying = false;
 
-musicButton.addEventListener("click", async () => {
+// 🌟 移动端音频解锁（关键）
+function unlockAudio() {
+  bgMusic.play().then(() => {
+    bgMusic.pause();
+    document.removeEventListener('touchstart', unlockAudio);
+    document.removeEventListener('click', unlockAudio);
+    console.log('Audio unlocked ✅');
+  }).catch(() => {});
+}
+document.addEventListener('touchstart', unlockAudio);
+document.addEventListener('click', unlockAudio);
+
+// 播放/暂停控制
+musicButton.addEventListener("click", () => {
   const dark = document.body.classList.contains("dark-theme");
-  try {
-    if (isPlaying) {
-      bgMusic.pause();
-      musicIcon.src = dark ? "images/music-play-light.svg" : "images/music-play-dark.svg";
-      musicIcon.dataset.playing = "false";
-    } else {
-      await bgMusic.play();
-      musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
-      musicIcon.dataset.playing = "true";
-    }
-    isPlaying = !isPlaying;
-  } catch (err) {
-    console.log("播放失败：", err);
+  if (isPlaying) {
+    bgMusic.pause();
+    musicIcon.src = dark ? "images/music-play-light.svg" : "images/music-play-dark.svg";
+    musicIcon.dataset.playing = "false";
+  } else {
+    bgMusic.play().catch(err => console.log("Play blocked:", err));
+    musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
+    musicIcon.dataset.playing = "true";
   }
+  isPlaying = !isPlaying;
 });
