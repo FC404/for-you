@@ -27,6 +27,7 @@ function heartXY(t, scaleX, scaleY) {
   return { x: x * scaleX, y: -y * scaleY };
 }
 
+// 弹窗飞行动画
 function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   const startTime = performance.now();
   function animate(now) {
@@ -42,13 +43,15 @@ function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   requestAnimationFrame(animate);
 }
 
-
+// 创建一批心形弹窗
 function createHeartBatch(speed = 1) {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
-  const totalPoints = parseInt(popupCountSlider.value); 
-  const interval = 50; // 每颗弹窗生成间隔
+  const totalPoints = parseInt(popupCountSlider.value); // 数量固定
+  const flyDuration = 1500 / speed;   // 飞行时间随倍速缩放
+  const stayDuration = 5000 / speed;  // 停留时间随倍速缩放
+  const interval = 100;               // 弹窗生成间隔固定
 
   for (let i = 0; i < totalPoints; i++) {
     setTimeout(() => {
@@ -82,16 +85,13 @@ function createHeartBatch(speed = 1) {
         case 3: startX = window.innerWidth + offset; startY = Math.random() * window.innerHeight; break;
       }
 
-      const flyDuration = 2000 / speed;
-      const stayDuration = 4000 / speed;
       flyPopup(popup, startX, startY, targetX, targetY, flyDuration);
       setTimeout(() => popup.remove(), flyDuration + stayDuration);
-
     }, i * interval);
   }
 
   // 下一批心形生成
-  const nextBatchDelay = (totalPoints * interval + 200) / speed;
+  const nextBatchDelay = totalPoints * interval + 200;
   setTimeout(() => createHeartBatch(speed), nextBatchDelay);
 }
 
