@@ -36,10 +36,13 @@ body {
 }
 
 @keyframes breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
   }
+
   50% {
     transform: translate(-50%, -50%) scale(1.08);
     opacity: 0.9;
@@ -62,11 +65,14 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: transform 1.2s ease, opacity 1.2s ease;
   backdrop-filter: blur(6px);
-  background: rgba(255, 255, 255, 0.85); /* 半透明白背景 */
-  color: #000; /* 黑色文字 */
+  background: rgba(255, 255, 255, 0.85);
+  /* 半透明白背景 */
+  color: #000;
+  /* 黑色文字 */
   font-weight: 700;
   font-size: clamp(12px, 3vw, 18px);
-  text-shadow: 0 0 4px rgba(0,0,0,0.4); /* 文字轻微阴影 */
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  /* 文字轻微阴影 */
 }
 
 .popup-header {
@@ -161,7 +167,7 @@ body {
   }
 
   #musicButton {
-    width:4em;
+    width: 4em;
     height: 4em;
   }
 }

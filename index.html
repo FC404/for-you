@@ -5,10 +5,170 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>For You ❤</title>
-  <link rel="icon" href="images/favicon.svg" type="image/x-icon">
   <link rel="stylesheet" href="css/style.css">
-</head>
+  <style>
+    :root {
+      --bg-color: #0b0d11;
+      --text-color: #fff;
+      --center-color: #ff66a3;
+      --popup-shadow: rgba(255, 255, 255, 0.25);
+    }
 
+    body.dark-theme {
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(24px, 5vw, 48px);
+      font-weight: 800;
+      color: var(--center-color);
+      text-shadow: 0 0 20px rgba(255, 102, 163, 0.5);
+      animation: breathe 3s ease-in-out infinite;
+      z-index: 2;
+      user-select: none;
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.08);
+        opacity: 0.9;
+      }
+    }
+
+    .popup {
+      position: fixed;
+      transform: translate(-50%, -50%) scale(0.9);
+      border-radius: 0.5em;
+      font-weight: 700;
+      opacity: 0;
+      box-shadow: 0 4px 16px var(--popup-shadow);
+      z-index: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: transform 1.2s ease, opacity 1.2s ease;
+      backdrop-filter: blur(6px);
+      background: rgba(255, 255, 255, 0.85);
+      color: #000;
+      font-size: clamp(12px, 3vw, 18px);
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.2em 0.6em;
+      font-size: 0.8em;
+      color: #fff;
+    }
+
+    .popup-close {
+      cursor: pointer;
+      font-weight: bold;
+      color: #fff;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .popup-close:hover {
+      opacity: 1;
+    }
+
+    .popup-content {
+      padding: 0.5em 0.8em;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 1em;
+      right: 1em;
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(20deg);
+    }
+
+    .theme-toggle img {
+      width: 3em;
+      height: 3em;
+    }
+
+    #musicButton {
+      position: absolute;
+      bottom: 1em;
+      right: 1em;
+      width: 3em;
+      height: 3em;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.2s ease;
+    }
+
+    #musicButton img {
+      width: 100%;
+      height: 100%;
+    }
+
+    #musicButton:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width:700px) {
+      .popup {
+        width: 100px;
+        font-size: 0.7em;
+        border-radius: 0.4em;
+        box-shadow: 0 2px 8px var(--popup-shadow);
+      }
+
+      .popup-header {
+        font-size: 0.65em;
+        padding: 0.15em 0.5em;
+      }
+
+      .popup-content {
+        padding: 0.3em 0.5em;
+      }
+
+      .theme-toggle img,
+      #musicButton {
+        width: 4em;
+        height: 4em;
+      }
+    }
+  </style>
+</head>
 
 <body class="dark-theme">
   <div class="center-text">For You ❤</div>

@@ -17,8 +17,8 @@ const gradients = [
   "linear-gradient(135deg,#a1ffce,#faffd1)"
 ];
 
-let activePopups = [];         // 当前屏幕上所有弹窗
-const MAX_POPUPS = 80;         // 累积达到 83 个就淡出清空
+let activePopups = [];
+const MAX_POPUPS = 60;  // 移动端减少数量
 
 // ------------------ 心形函数 ------------------
 function heartXY(t, scaleX, scaleY) {
@@ -41,9 +41,10 @@ function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   }
   requestAnimationFrame(animate);
 }
-// 超出上限时淡出最早的几个弹窗
+
+// ------------------ 超出数量时清理 ------------------
 function trimPopups() {
-  const excess = activePopups.length - MAX_POPUPS + 1;
+  const excess = activePopups.length - MAX_POPUPS;
   if (excess > 0) {
     const toRemove = activePopups.splice(0, excess);
     toRemove.forEach(p => {
@@ -54,20 +55,18 @@ function trimPopups() {
   }
 }
 
-
-// ------------------ 创建一批心形弹窗 ------------------
+// ------------------ 创建心形弹窗 ------------------
 function createHeartBatch() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
-  const totalPoints = window.innerWidth < 700 ? 30 : 50;
-  const flyDuration = window.innerWidth < 700 ? 3000 : 4000;
-  const stayDuration = window.innerWidth < 700 ? 4000 : 5000;
-  const interval = 100;
+  const totalPoints = window.innerWidth < 700 ? 20 : 40; // 移动端减少点数
+  const flyDuration = window.innerWidth < 700 ? 3000 : 4000; // 飞行时间
+  const stayDuration = window.innerWidth < 700 ? 4000 : 6000; // 停留时间
+  const interval = 120;
 
   for (let i = 0; i < totalPoints; i++) {
     setTimeout(() => {
-      // 累积计数，超过 MAX_POPUPS 就淡出清空
       trimPopups();
 
       const msg = messages[Math.floor(Math.random() * messages.length)];
@@ -93,11 +92,13 @@ function createHeartBatch() {
         }, 500);
       });
 
+      // 心形目标位置
       const t = 2 * Math.PI * (i / totalPoints);
       const pos = heartXY(t, baseScale, baseScale);
       const targetX = centerX + pos.x;
       const targetY = centerY + pos.y;
 
+      // 起点从屏幕四周随机飞入
       const side = Math.floor(Math.random() * 4);
       const offset = 100;
       let startX, startY;
@@ -110,23 +111,23 @@ function createHeartBatch() {
 
       flyPopup(popup, startX, startY, targetX, targetY, flyDuration);
 
-      // 自动消失
+      // 停留后淡出
       setTimeout(() => {
-        popup.style.transition = "opacity 0.7s";
+        popup.style.transition = "opacity 1s";
         popup.style.opacity = 0;
         setTimeout(() => {
           popup.remove();
           activePopups = activePopups.filter(p => p !== popup);
-        }, 500);
+        }, 1000);
       }, flyDuration + stayDuration);
 
     }, i * interval);
   }
 
-  setTimeout(() => createHeartBatch(), totalPoints * interval + 200);
+  setTimeout(() => createHeartBatch(), totalPoints * interval + 500);
 }
 
-// ------------------ 开始生成 ------------------
+// ------------------ 启动 ------------------
 createHeartBatch();
 
 // ------------------ 主题切换 ------------------
