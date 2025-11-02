@@ -41,6 +41,7 @@ function flyPopup(popup, startX, startY, targetX, targetY, duration) {
   requestAnimationFrame(animate);
 }
 
+
 function createPopup() {
   const isMobile = window.innerWidth < 700;
   let count = parseInt(popupCountSlider.value);
@@ -49,11 +50,7 @@ function createPopup() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
 
-  // 根据屏幕大小调整心形缩放
-  const scale = isMobile 
-      ? Math.min(window.innerWidth, window.innerHeight) / 40 
-      : Math.min(window.innerWidth, window.innerHeight) / 35;
-
+  const scale = Math.min(window.innerWidth, window.innerHeight) / (isMobile ? 40 : 35);
   const interval = 100;
 
   for (let i = 0; i < count; i++) {
@@ -61,36 +58,27 @@ function createPopup() {
       const msg = messages[Math.floor(Math.random() * messages.length)];
       const popup = document.createElement("div");
       popup.className = "popup";
-      popup.innerHTML = `
-        <div class="popup-header">
-          <span>💌 鼓励</span>
-          <span class="popup-close">×</span>
-        </div>
-        <div class="popup-content">${msg}</div>
-      `;
+      popup.innerHTML = `<div class="popup-header"><span>💌 鼓励</span><span class="popup-close">×</span></div>
+                         <div class="popup-content">${msg}</div>`;
       popup.style.background = gradients[Math.floor(Math.random() * gradients.length)];
       document.body.appendChild(popup);
       popup.querySelector(".popup-close").addEventListener("click", () => popup.remove());
 
-      // 心形 t 坐标
       const t = 2 * Math.PI * (i / count);
       const pos = heartXY(t, scale, scale);
 
-      // 起点固定在屏幕中心
+      // 起点固定在中心
       const startX = centerX;
       const startY = centerY;
-
       const targetX = centerX + pos.x;
       const targetY = centerY + pos.y;
 
-      const flyDuration = Math.min(2000, 1200 * 20 / count);
-      const stayDuration = Math.max(2000, 4000 * 20 / count);
-
-      flyPopup(popup, startX, startY, targetX, targetY, flyDuration);
-      setTimeout(() => popup.remove(), stayDuration);
+      flyPopup(popup, startX, startY, targetX, targetY, 1200);
+      setTimeout(() => popup.remove(), 3000);
     }, i * interval);
   }
 }
+
 
 
 setInterval(createPopup, 1000);

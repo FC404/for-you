@@ -60,11 +60,12 @@
     box-shadow: 0 4px 16px var(--popup-shadow);
     z-index: 1;
     white-space: nowrap;
-    transform: translate(-50%, -50%) scale(0.9);
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: transform 1.2s ease, opacity 1.2s ease;
+    transition: left 1s ease, top 1s ease, opacity 1s ease;  /* 改成 left/top */
+    /* 移除 transform: translate(-50%, -50%) */
   }
+  
 
   .popup-header {
     display: flex;
