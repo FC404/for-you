@@ -60,7 +60,7 @@ function createHeartBatch() {
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
-  const totalPoints = window.innerWidth < 700 ? 35 : 50; // 移动端减少点数
+  const totalPoints = window.innerWidth < 700 ? 28 : 50; // 移动端减少点数
   const flyDuration = window.innerWidth < 700 ? 3000 : 4000; // 飞行时间
   const stayDuration = window.innerWidth < 700 ? 4000 : 6000; // 停留时间
   const interval = 120;
