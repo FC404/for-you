@@ -132,15 +132,22 @@ for (let i = 0; i < count; i++) {
   // 播放/暂停控制
   musicButton.addEventListener("click", () => {
     const dark = document.body.classList.contains("dark-theme");
+  
+    // 尝试播放（第一次点击解锁）
+    bgMusic.play().catch(() => {
+      console.log("首次点击解锁音频权限");
+    });
+  
     if (isPlaying) {
       bgMusic.pause();
       musicIcon.src = dark ? "images/music-play-light.svg" : "images/music-play-dark.svg";
       musicIcon.dataset.playing = "false";
     } else {
-      bgMusic.play().catch(err => console.log("Play blocked:", err));
       musicIcon.src = dark ? "images/music-pause-light.svg" : "images/music-pause-dark.svg";
       musicIcon.dataset.playing = "true";
     }
+  
     isPlaying = !isPlaying;
   });
+  
   
