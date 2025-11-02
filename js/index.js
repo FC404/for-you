@@ -48,8 +48,8 @@ function createHeartBatch() {
   const centerY = window.innerHeight / 2;
   const baseScale = Math.min(window.innerWidth, window.innerHeight) / 35;
   const totalPoints = 50;  // 每批生成的弹窗数量
-  const flyDuration = 1500;
-  const stayDuration = 7000;
+  const flyDuration = 4000;
+  const stayDuration = 5000;
   const interval = 100;
 
   for (let i = 0; i < totalPoints; i++) {
@@ -79,7 +79,7 @@ function createHeartBatch() {
       activePopups.push(popup);
 
       popup.querySelector(".popup-close").addEventListener("click", () => {
-        popup.style.transition = "opacity 0.5s";
+        popup.style.transition = "opacity 0.7s";
         popup.style.opacity = 0;
         setTimeout(() => {
           popup.remove();
@@ -106,7 +106,7 @@ function createHeartBatch() {
 
       // 自动消失
       setTimeout(() => {
-        popup.style.transition = "opacity 0.5s";
+        popup.style.transition = "opacity 0.7s";
         popup.style.opacity = 0;
         setTimeout(() => {
           popup.remove();
